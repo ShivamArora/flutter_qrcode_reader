@@ -1,5 +1,4 @@
 #import "QRCodeReaderPlugin.h"
-
 static NSString *const CHANNEL_NAME = @"qrcode_reader";
 static FlutterMethodChannel *channel;
 
@@ -16,6 +15,7 @@ static FlutterMethodChannel *channel;
 @property (nonatomic, retain) UIViewController *qrcodeViewController;
 @property (nonatomic) BOOL isFrontCamera;
 @end
+
 
 @implementation QRCodeReaderPlugin {
 FlutterResult _result;
@@ -69,14 +69,13 @@ float portraitheight;
     return self;
 }
 
-
 - (void)showQRCodeView:(FlutterMethodCall*)call {
     _qrcodeViewController = [[UIViewController alloc] init];
     [_viewController presentViewController:_qrcodeViewController animated:NO completion:nil];
 
     if (@available(iOS 13.0, *)) {
-        [_qrcodeViewController setModalInPresentation:(true) ];
-        // [_qrcodeViewController setModalPresentationStyle:(UIModalPresentationFullScreen) ];
+        //[_qrcodeViewController setModalInPresentation:(true) ];
+        [_qrcodeViewController setModalPresentationStyle:(UIModalPresentationFullScreen) ];
     } else {
         // Fallback on earlier versions
     }
