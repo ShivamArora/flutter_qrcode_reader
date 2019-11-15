@@ -113,12 +113,23 @@ float portraitheight;
     _viewPreview.backgroundColor = [UIColor whiteColor];
     [_qrcodeViewController.view addSubview:_viewPreview];
     _buttonCancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-
+    
     if (@available(iOS 13.0, *)) {
         _buttonCancel.frame = CGRectMake(width/2-width/8, (height-height/20)-30, width/4, height/20);
     } else {
         // Fallback on earlier versions
         _buttonCancel.frame = CGRectMake(width/2-width/8, height-height/20, width/4, height/20);
+    }
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && @available(iOS 13.0, *))
+    {
+        if(UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])){
+             
+            _buttonCancel.frame = CGRectMake(landscapeheight/2-landscapeheight/5, (landscapeheight-landscapeheight/20)-100, landscapeheight/4, landscapeheight/20);
+        }
+        else{
+        _buttonCancel.frame = CGRectMake(width/2-width/5, (height-height/20)-100, width/4, height/20);
+        }
     }
 
     [_buttonCancel setTitle:@"CANCEL"forState:UIControlStateNormal];
@@ -178,6 +189,7 @@ float portraitheight;
 
 - (void) rotate:(NSNotification *) notification{
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    
     if (orientation == 1) {
         height = portraitheight;
         width = landscapeheight;
@@ -188,11 +200,26 @@ float portraitheight;
             // Fallback on earlier versions
             _buttonCancel.frame = CGRectMake(width/2-width/8, height-height/20, width/4, height/20);
         }
+        
     } else {
         height = landscapeheight;
         width = portraitheight;
         _buttonCancel.frame = CGRectMake(width/2-width/8, height-height/10, width/4, height/20);
+        
     }
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && @available(iOS 13.0, *))
+    {
+        portraitheight =  [UIScreen mainScreen].applicationFrame.size.height;
+           landscapeheight = [UIScreen mainScreen].applicationFrame.size.width;
+        if(UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])){
+             _buttonCancel.frame = CGRectMake(landscapeheight/2-landscapeheight/5, (landscapeheight-landscapeheight/20)-100, landscapeheight/4, landscapeheight/20);
+        }
+        else{
+        _buttonCancel.frame = CGRectMake(portraitheight/2-portraitheight/5, (landscapeheight-landscapeheight/20)-120, portraitheight/4, landscapeheight/20);
+        }
+    }
+    
     _qrcodeview.frame = CGRectMake(0, 0, width, height) ;
     _viewPreview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height+height/10) ];
     [_videoPreviewLayer setFrame:_viewPreview.layer.bounds];
